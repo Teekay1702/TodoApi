@@ -53,7 +53,9 @@ To configure the in-memory database, check Program.cs:
 ```bash
 builder.Services.AddDbContext<TodoContext>(options =>
     options.UseInMemoryDatabase("TodoList"));
-```## 📝 API Endpoints
+```
+
+## 📝 API Endpoints
 
 | **Method** | **Endpoint**        | **Description**        |
 |------------|--------------------|-------------------------|
