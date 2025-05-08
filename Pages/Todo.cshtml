@@ -1,4 +1,8 @@
 ﻿@page
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
 @model TodoModel
 @{
     ViewData["Title"] = "Todo List";
@@ -6,16 +10,21 @@
 
 <h2>Todo List</h2>
 
-<form method="post">
+<form method="post" class="mb-3">
+    @Html.AntiForgeryToken() <!-- Add this line -->
     <input asp-for="NewTodo.Name" placeholder="Add a new task..." class="form-control" />
     <span asp-validation-for="NewTodo.Name" class="text-danger"></span>
     <input type="submit" value="Add" class="btn btn-primary mt-2" />
 </form>
 
 
-<table>
+<table class="table">
     <thead>
-        <tr><th>Task</th><th>Complete</th><th>Actions</th></tr>
+        <tr>
+            <th>Task</th>
+            <th>Complete</th>
+            <th>Actions</th>
+        </tr>
     </thead>
     <tbody>
         @foreach (var item in Model.Todos)
@@ -24,14 +33,14 @@
                 <td>@item.Name</td>
                 <td>
                     <form method="post" asp-page-handler="Toggle">
-                        <input type="hidden" name="Id" value="@item.Id" />
-                        <input type="submit" value="@(item.IsComplete ? "✔️" : "❌")" />
+                        <input type="hidden" name="id" value="@item.Id" />
+                        <input type="submit" class="btn btn-sm" value="@(item.IsComplete ? "✔️" : "❌")" />
                     </form>
                 </td>
                 <td>
                     <form method="post" asp-page-handler="Delete">
-                        <input type="hidden" name="Id" value="@item.Id" />
-                        <input type="submit" value="Delete" />
+                        <input type="hidden" name="id" value="@item.Id" />
+                        <input type="submit" class="btn btn-danger btn-sm" value="Delete" />
                     </form>
                 </td>
             </tr>

@@ -9,6 +9,8 @@ builder.Services.AddOpenApi();
 builder.Services.AddRazorPages();
 builder.Services.AddDbContext<TodoContext>(opt =>
     opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Logging.AddConsole();
+
 
 
 var app = builder.Build();

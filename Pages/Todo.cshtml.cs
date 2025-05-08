@@ -13,7 +13,7 @@ public class TodoModel : PageModel
     }
 
     [BindProperty]
-    public TodoItem NewTodo { get; set; } = new();
+    public NewTodoInput NewTodo { get; set; } = new();
 
     public List<TodoItem> Todos { get; set; } = new();
 
@@ -24,6 +24,18 @@ public class TodoModel : PageModel
 
     public async Task<IActionResult> OnPostAsync()
     {
+        if (!ModelState.IsValid)
+        {
+            // Log validation errors for debugging
+            foreach (var error in ModelState)
+            {
+                Console.WriteLine($"Field: {error.Key}, Errors: {string.Join(", ", error.Value.Errors.Select(e => e.ErrorMessage))}");
+            }
+
+            Todos = await _context.TodoItems.ToListAsync();
+            return Page(); // return early if validation fails
+        }
+
         if (!string.IsNullOrWhiteSpace(NewTodo.Name))
         {
             var todo = new TodoItem
@@ -31,6 +43,7 @@ public class TodoModel : PageModel
                 Name = NewTodo.Name,
                 IsComplete = false
             };
+
             _context.TodoItems.Add(todo);
             await _context.SaveChangesAsync();
         }
@@ -38,7 +51,6 @@ public class TodoModel : PageModel
         Todos = await _context.TodoItems.ToListAsync();
         return Page();
     }
-
 
 
     public async Task<IActionResult> OnPostToggleAsync(long id)

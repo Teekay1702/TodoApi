@@ -1,7 +1,7 @@
-﻿// Models/NewTodoInput.cs
-namespace TodoApi.Models;
+﻿using System.ComponentModel.DataAnnotations;
 
 public class NewTodoInput
 {
-    public string Name { get; set; } = "";
+    public string Name { get; set; } = string.Empty;
 }
+
